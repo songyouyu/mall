@@ -32,6 +32,7 @@ public class UmsResourceController {
     @ResponseBody
     public CommonResult create(@RequestBody UmsResource umsResource) {
         int count = resourceService.create(umsResource);
+        // 后台资源被缓存在 Map 中, 修改资源需清空 Map, 下次重新加载
         dynamicSecurityMetadataSource.clearDataSource();
         if (count > 0) {
             return CommonResult.success(count);
@@ -46,6 +47,7 @@ public class UmsResourceController {
     public CommonResult update(@PathVariable Long id,
                                @RequestBody UmsResource umsResource) {
         int count = resourceService.update(id, umsResource);
+        // 后台资源被缓存在 Map 中, 修改资源需清空 Map, 下次重新加载
         dynamicSecurityMetadataSource.clearDataSource();
         if (count > 0) {
             return CommonResult.success(count);

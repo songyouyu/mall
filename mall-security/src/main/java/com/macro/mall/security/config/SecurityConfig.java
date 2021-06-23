@@ -17,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
 /**
  * 对SpringSecurity的配置的扩展，支持自定义白名单资源路径和查询用户逻辑
  * Created by macro on 2019/11/5.
@@ -29,8 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = httpSecurity
-                .authorizeRequests();
+        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry
+                = httpSecurity.authorizeRequests();
         //不需要保护的资源路径允许访问
         for (String url : ignoreUrlsConfig().getUrls()) {
             registry.antMatchers(url).permitAll();
@@ -110,7 +109,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public DynamicAccessDecisionManager dynamicAccessDecisionManager() {
         return new DynamicAccessDecisionManager();
     }
-
 
     @ConditionalOnBean(name = "dynamicSecurityService")
     @Bean

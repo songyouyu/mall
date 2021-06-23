@@ -38,12 +38,12 @@ public class DynamicSecurityFilter extends AbstractSecurityInterceptor implement
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         FilterInvocation fi = new FilterInvocation(servletRequest, servletResponse, filterChain);
-        //OPTIONS请求直接放行
+        // OPTIONS请求直接放行
         if(request.getMethod().equals(HttpMethod.OPTIONS.toString())){
             fi.getChain().doFilter(fi.getRequest(), fi.getResponse());
             return;
         }
-        //白名单请求直接放行
+        // 白名单请求直接放行
         PathMatcher pathMatcher = new AntPathMatcher();
         for (String path : ignoreUrlsConfig.getUrls()) {
             if(pathMatcher.match(path,request.getRequestURI())){
@@ -51,7 +51,11 @@ public class DynamicSecurityFilter extends AbstractSecurityInterceptor implement
                 return;
             }
         }
-        //此处会调用AccessDecisionManager中的decide方法进行鉴权操作
+        // 此处会调用 AccessDecisionManager 中的 decide 方法进行鉴权操作
+        // 会调用 AccessDecisionManager 中的 decide 方法用于鉴权操作
+        // decide() 所需要的 attributes 就是配置好的访问当前接口所需要的权限
+        // DynamicSecurityMetadataSource: 实现 FilterInvocationSecurityMetadataSource 接口重写 getAttributes().
+        // DynamicAccessDecisionManager: 实现 AccessDecisionManager 接口重写 decide()
         InterceptorStatusToken token = super.beforeInvocation(fi);
         try {
             fi.getChain().doFilter(fi.getRequest(), fi.getResponse());
