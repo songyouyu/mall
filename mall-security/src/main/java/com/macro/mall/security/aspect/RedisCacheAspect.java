@@ -37,7 +37,8 @@ public class RedisCacheAspect {
         try {
             result = joinPoint.proceed();
         } catch (Throwable throwable) {
-            //有CacheException注解的方法需要抛出异常
+            // 有 CacheException 注解的方法需要抛出异常
+            // isAnnotationPresent 只能获取到当前方法上的注解, 不能获取到实现的方法上的注解.
             if (method.isAnnotationPresent(CacheException.class)) {
                 throw throwable;
             } else {
